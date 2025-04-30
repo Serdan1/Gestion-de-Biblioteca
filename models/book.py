@@ -50,3 +50,4 @@ class Book:
 
     def __str__(self) -> str:
         return f"{self._title} by {self._author} ({self._genre.value}) - {'Available' if self._is_available else 'Not Available'}"
+    
