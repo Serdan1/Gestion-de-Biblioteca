@@ -2,39 +2,49 @@
 from models.book import Book, BookGenre
 from models.user import User
 from models.employee import Employee
+from utils.storage import Storage
 
 if __name__ == "__main__":
-    # Crear un libro
+    # Crear instancias de prueba
     book1 = Book("The Great Gatsby", "F. Scott Fitzgerald", BookGenre.FICTION)
     book2 = Book("1984", "George Orwell", BookGenre.FICTION)
-
-    # Crear un usuario
     user = User(1, "Alice")
-    print(user)  # User 1: Alice, Borrowed Books: []
+    employee = Employee(101, "Bob")
 
     # El usuario toma prestado un libro
     user.borrow_book(book1)
-    print(user)  # User 1: Alice, Borrowed Books: [The Great Gatsby by F. Scott Fitzgerald (FICTION) - Not Available]
-    print(book1)  # The Great Gatsby by F. Scott Fitzgerald (FICTION) - Not Available
 
-    # El usuario devuelve el libro
-    user.return_book(book1)
-    print(user)  # User 1: Alice, Borrowed Books: []
-    print(book1)  # The Great Gatsby by F. Scott Fitzgerald (FICTION) - Available
+    # Crear listas
+    books = [book1, book2]
+    users = [user]
+    employees = [employee]
 
-    # Crear un empleado
-    employee = Employee(101, "Bob")
-    print(employee)  # Employee 101: Bob
+    # Guardar datos
+    storage = Storage()
+    storage.save_books(books)
+    storage.save_users(users)
+    storage.save_employees(employees)
+    print("Datos guardados.")
 
-    # El empleado gestiona libros
-    library_books = []
-    employee.add_book(book1, library_books)
-    employee.add_book(book2, library_books)
-    print("Library Books:", [str(book) for book in library_books])
+    # Limpiar las listas para simular una nueva carga
+    books.clear()
+    users.clear()
+    employees.clear()
 
-    # El empleado elimina un libro
-    employee.remove_book(book1, library_books)
-    print("Library Books after removal:", [str(book) for book in library_books])
+    # Cargar datos
+    books = storage.load_books()
+    users = storage.load_users()
+    employees = storage.load_employees()
 
-    # El empleado gestiona un usuario
-    employee.manage_user(user)
+    # Imprimir resultados
+    print("\nLibros cargados:")
+    for book in books:
+        print(book)
+
+    print("\nUsuarios cargados:")
+    for user in users:
+        print(user)
+
+    print("\nEmpleados cargados:")
+    for employee in employees:
+        print(employee)
